@@ -1,0 +1,43 @@
+{% if not request.is_xhr %}{% extends "base.html" %}{% endif -%}
+{% block table %}
+    <table class='table table-striped'>
+        <tr>
+            <td></td>
+            <td><h4>Name</h4></td>
+            <td><h4>Weight</h4></td>
+            <td><h4>Division</h4></td>
+            <td><h4>Bench #1</h4></td>
+            <td><h4>Bench #2</h4></td>
+            <td><h4>Bench #3</h4></td>
+            <td><h4>Deadlift #1</h4></td>
+            <td><h4>Deadlift #2</h4></td>
+            <td><h4>Deadlift #3</h4></td>
+            <td><h4>Total</h4></td>
+            <td><h4>Wilks</h4></td>
+        </tr>
+        {% for lifter in lifters %}
+        <tr>
+            <td>
+                {% if lifter.division.leader == lifter %}
+                <i class="icon-bookmark"></i>
+                {% endif %}
+            </td>
+            <td>{{lifter.name}}</td>
+            <td>{{lifter.weight}}</td>
+            <td>{{lifter.division.name}}</td>
+            {% for lift in ("Bench Press", "Deadlift") %}
+                {% for n in range(1,4) %}
+                    {% if lifter.attempt(lift, n)%}
+                    <td {% if lifter.attempt(lift,n).miss %} class='miss'{% endif %} {% if logged_in %} contenteditable=true {% endif %}>
+                    {{lifter.attempt(lift, n).weight | round(1)}}</td>
+                    {% else %}
+                    <td {% if logged_in %} contenteditable=true {% endif %}></td>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <td>{{lifter.total}}</td>
+            <td>{{lifter.wilks | round(1)}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

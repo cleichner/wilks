@@ -1,0 +1,15 @@
+from app import *
+
+db.drop_all()
+db.create_all()
+db.session.add(Division('Male Teen'))
+db.session.add(Division('Female Teen'))
+db.session.add(Division('Male'))
+db.session.add(Division('Female'))
+db.session.add(Division("Master's I Male"))
+db.session.add(Division("Master's I Female"))
+db.session.add(Division("Master's II Male"))
+db.session.add(Division("Master's II Female"))
+db.session.add(Lift('Bench Press'))
+db.session.add(Lift('Deadlift'))
+db.session.commit()
